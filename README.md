@@ -1,4 +1,4 @@
-* Ad Netowork Demo*
+*Ad Netowork Demo*
 
 This code was written to provide a demonstration of DataStax's Brisk at the
 [May 2011 Cassandra London meetup](http://www.meetup.com/Cassandra-London/events/16643691/).
@@ -7,7 +7,7 @@ It uses the [phpcassa Cassandra client library for PHP](https://github.com/thobb
 You can [view a podcast of the talk here](http://skillsmatter.com/podcast/nosql/cassandra-may-meetup/js-1775 "Podcast on SkillsMatter website")
 and [browse the slides here](http://www.slideshare.net/davegardnerisme/cassandra-hadoop-brisk).
 
-** Features **
+**Features**
 
  - Powers wehaveyourkidneys.com
  - Uses Cookie-based identification system for each user
@@ -18,7 +18,7 @@ and [browse the slides here](http://www.slideshare.net/davegardnerisme/cassandra
  - Batch analytics: Hive query to calculate the mean and standard deviation of
    the number of segments users belong to
 
-** Usage **
+**Usage**
 
 ***API to add a user to a segment***
 
@@ -37,7 +37,7 @@ There is also a pixel version for using in img tags.
 
     http://wehaveyourkidneys.com/show.php
 
-** Hive queries **
+**Hive queries**
 
 One of the things that excites me about Brisk is the ease with which you can
 analyse data in Cassandra. Brisk provides Hive support for Cassandra (an
