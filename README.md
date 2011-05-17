@@ -1,4 +1,4 @@
-*Ad Netowork Demo*
+***Ad Netowork Demo***
 
 This code was written to provide a demonstration of DataStax's Brisk at the
 [May 2011 Cassandra London meetup](http://www.meetup.com/Cassandra-London/events/16643691/).
@@ -20,7 +20,7 @@ and [browse the slides here](http://www.slideshare.net/davegardnerisme/cassandra
 
 **Usage**
 
-***API to add a user to a segment***
+*API to add a user to a segment*
 
     http://wehaveyourkidneys.com/add.php?segment=<segmentCode>&expires=<numberOfSeconds>
 
@@ -33,7 +33,7 @@ There is also a pixel version for using in img tags.
 
     http://pixel.wehaveyourkidneys.com/add.php?segment=<segmentCode>&expires=<numberOfSeconds>
 
-***API to view your segments***
+*API to view your segments*
 
     http://wehaveyourkidneys.com/show.php
 
