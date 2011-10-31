@@ -76,6 +76,8 @@ try {
     }
     
     // 2. update overall counters for this ad (for performance tracking)
+    // (to 10 mins)
+    $stamp = date('YmdHi');
     $ads->add(
             $adId,              // row key
             'click',            // column

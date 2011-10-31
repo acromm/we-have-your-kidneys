@@ -74,6 +74,9 @@ try {
     }
     
     // 2. update overall counters for this ad (for performance tracking)
+    // (to 10 mins)
+    $stamp = date('YmdHi');
+    $stamp = substr($stamp, 0, strlen($stamp)-1);
     $ads->add(
             $adId,              // row key
             'impression',       // column

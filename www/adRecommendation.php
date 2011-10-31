@@ -42,8 +42,8 @@ try {
 
 ?>
 <div>
-    <a href="http://www.wehaveyourkidneys.com/?adClick=<?=$adId?>" title="<?=htmlspecialchars($ad['title'])?>">
+    <a href="http://www.wehaveyourkidneys.com/adClick.php?ad=<?=$adId?>" title="<?=htmlspecialchars($ad['title'])?>">
         <img src="<?=$ad['img']?>" alt="<?=htmlspecialchars($ad['title'])?>" />
     </a>
-    <img src="http://pixel.wehaveyourkidneys.com/?adImpression=<?=$adId?>&r=<?=time()?>" alt="<?=htmlspecialchars($ad['title'])?>" />
+    <img src="http://pixel.wehaveyourkidneys.com/adImpression.php?ad=<?=$adId?>&r=<?=time()?>" />
 </div>
