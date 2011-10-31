@@ -1,0 +1,19 @@
+create keyspace whyk
+    with placement_strategy = 'org.apache.cassandra.locator.SimpleStrategy'
+    and strategy_options = [{replication_factor:1}];
+
+use whyk;
+
+create column family users
+    with comparator = 'AsciiType';
+
+create column family segments
+    with column_type = 'Super'
+    and comparator = 'AsciiType'
+    and default_validation_class = CounterColumnType;
+
+create column family ads
+    with column_type = 'Super'
+    and comparator = 'AsciiType'
+    and default_validation_class = CounterColumnType;
+

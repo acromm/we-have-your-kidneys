@@ -94,14 +94,20 @@ would be stored in HDFS - hence you'd need a normal Hadoop install.
     ant
     ./bin/brisk cassandra -t
 
-    sudo apt-get install apache2 php5
+    sudo apt-get install apache2 php5 php-pear php5-dev uuid-dev
     cd /var/www
     git clone git://github.com/davegardnerisme/we-have-your-kidneys.git
     cd we-have-your-kidneys
     ln -s /var/www/we-have-your-kidneys/vhost/wehaveyourkidneys.com.vhost \
         /etc/apache2/sites-available/wehaveyourkidneys.com.vhost
-    a2ensite wehaveyourkidneys.com.vhost
-    service apache2 reload
+    sudo a2ensite wehaveyourkidneys.com.vhost
+
+    git submodule init
+    git submodule update
+
+    sudo pecl install uuid
+    echo 'extension=uuid.so' > /etc/php5/conf.d/uuid.ini
+    sudo service apache2 reload
 
 ## Some notes on the project design
 

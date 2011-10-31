@@ -9,7 +9,7 @@
  * We need to udpdate:
  * 
  * -> for capacity planning:
- *   ["buckets"][<stamp>][<bucketId>]["click"] = #
+ *   ["segments"][<stamp>][<bucketId>]["click"] = #
  * -> for overall ad performance tracking:
  *   ["ads"][<adId>][<stamp>]["click"] = #
  * -> for ad performance by bucket:
@@ -51,23 +51,23 @@ try {
 
     $pool = new ConnectionPool('whyk', array('localhost'));
 
-    // get user's buckets
+    // get user's segments
     $users = new ColumnFamily($pool, 'users');
-    $segments = $users->get($userUuid);
+    $userSegments = $users->get($userUuid);
     
     // update
-    $buckets = new ColumnFamily($pool, 'buckets');
+    $segments = new ColumnFamily($pool, 'segments');
     $ads = new ColumnFamily($pool, 'ads');
     
     // 1. update counters based on the user's segments (one update per segment)
-    foreach ($segments as $segment => $value) {
+    foreach ($userSegments as $segment => $value) {
         $ads->add(
                 $adId,          // row key
                 'click',        // column
                 1,              // increment
                 $segment        // super-column
                 );
-        $buckets->add(
+        $segments->add(
                 date('YmdH'),   // row key = hourly timestamp bucket
                 'click',        // column
                 1,              // increment

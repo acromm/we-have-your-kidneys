@@ -50,16 +50,9 @@ try {
     // store
     $pool = new ConnectionPool('whyk', array('localhost'));
     $users = new ColumnFamily($pool, 'users');
-    $segments = new ColumnFamily($pool, 'segments');
     $users->insert(
             $userUuid,
             array($segment => 1),
-            NULL,    // default TS
-            $expires
-            );
-    $segments->insert(
-            $segment,
-            array($userUuid => 1),
             NULL,    // default TS
             $expires
             );
