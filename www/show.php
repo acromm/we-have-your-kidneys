@@ -23,25 +23,19 @@
 include_once dirname(__FILE__) . '/../thirdParty/phpcassa/columnfamily.php';
 include_once dirname(__FILE__) . '/../lib/identify.php';
 
-try
-{
+header('Content-Type: application/json');
+
+try {
     // get
     $pool = new ConnectionPool('whyk', array('localhost'));
     $users = new ColumnFamily($pool, 'users');
     // @todo this only gets first 100!
     $segments = $users->get($userUuid);
 
-    header('Content-Type: application/json');
     echo json_encode(array_keys($segments));
-}
-catch (cassandra_NotFoundException $e)
-{
-    header('Content-Type: application/json');
+} catch (cassandra_NotFoundException $e) {
     echo json_encode('You have escaped being kidneyed, so far.');
-}
-catch (Exception $e)
-{
+} catch (Exception $e) {
     header('HTTP/1.1 500 Internal Server Error');
-    header('Content-Type: application/json');
     echo json_encode($e->getMessage());
 }

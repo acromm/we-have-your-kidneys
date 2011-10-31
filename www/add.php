@@ -29,8 +29,7 @@
 include_once dirname(__FILE__) . '/../thirdParty/phpcassa/columnfamily.php';
 include_once dirname(__FILE__) . '/../lib/identify.php';
 
-try
-{
+try {
     // segment
     $segment = isset($_GET['segment']) ? $_GET['segment'] : NULL;
 
@@ -38,12 +37,10 @@ try
     $expires = isset($_GET['expires']) ? $_GET['expires'] : NULL;
 
     // segment needed; expires must be int
-    if ($segment === NULL || !preg_match('/^[a-zA-Z0-9]+$/', $segment))
-    {
+    if ($segment === NULL || !preg_match('/^[a-zA-Z0-9]+$/', $segment)) {
         throw new Exception('Invalid "segment" param; need [a-zA-Z0-9]');
     }
-    if ($expires !== NULL && !ctype_digit($expires))
-    {
+    if ($expires !== NULL && !ctype_digit($expires)) {
         throw new Exception('Invalid "expires" param; need integer number of seconds');
     }
 
@@ -66,21 +63,16 @@ try
 
     // return as pixel?
     if (isset($_GET['pixel'])
-            || strpos($_SERVER['HTTP_HOST'], 'pixel') !== FALSE)
-    {
+            || strpos($_SERVER['HTTP_HOST'], 'pixel') !== FALSE) {
         header('Content-Type: image/gif');
         echo base64_decode(
                 'R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='
                 );
-    }
-    else
-    {
+    } else {
         header('Content-Type: application/json');
         echo json_encode('OK');
     }
-}
-catch (Exception $e)
-{
+} catch (Exception $e) {
     header('HTTP/1.1 500 Internal Server Error');
     header('Content-Type: application/json');
     echo json_encode($e->getMessage());
