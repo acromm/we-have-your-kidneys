@@ -3,9 +3,9 @@
     ServerName wehaveyourkidneys.com
     ServerAlias www.wehaveyourkidneys.com, pixel.wehaveyourkidneys.com
 
-    DocumentRoot /var/www/whyk/www
+    DocumentRoot /var/www/we-have-your-kidneys/www
 
-    <Directory "/var/www/whyk/www">
+    <Directory "/var/www/we-have-your-kidneys/www">
         Options FollowSymLinks
         AllowOverride All
         Order Allow,Deny

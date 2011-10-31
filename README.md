@@ -84,6 +84,25 @@ and then get the Hive driver working with a standard Hadoop install. With this
 setup you could still execute Hive directly against Cassandra, but the results
 would be stored in HDFS - hence you'd need a normal Hadoop install.
 
+## Installing Brisk
+
+    sudo apt-get update
+    sudo apt-get install git-core ant openjdk-6-jdk libmaven-compiler-plugin-java
+
+    git clone git://github.com/steeve/brisk.git
+    cd brisk
+    ant
+    ./bin/brisk cassandra -t
+
+    sudo apt-get install apache2 php5
+    cd /var/www
+    git clone git://github.com/davegardnerisme/we-have-your-kidneys.git
+    cd we-have-your-kidneys
+    ln -s /var/www/we-have-your-kidneys/vhost/wehaveyourkidneys.com.vhost \
+        /etc/apache2/sites-available/wehaveyourkidneys.com.vhost
+    a2ensite wehaveyourkidneys.com.vhost
+    service apache2 reload
+
 ## Some notes on the project design
 
 This project has been written to try to make it obvious what Cassandra commands
