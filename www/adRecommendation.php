@@ -34,25 +34,10 @@ try {
     $adId = array_pop($ids);
     
     $ad = $adDefinitions[$adId];
-    
-
-    // ---
-    
-    // return as pixel?
-    if (isset($_GET['pixel'])
-            || strpos($_SERVER['HTTP_HOST'], 'pixel') !== FALSE) {
-        header('Content-Type: image/gif');
-        echo base64_decode(
-                'R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='
-                );
-    } else {
-        header('Content-Type: application/json');
-        echo json_encode('OK');
-    }
 } catch (Exception $e) {
     header('HTTP/1.1 500 Internal Server Error');
-    header('Content-Type: application/json');
-    echo json_encode($e->getMessage());
+    header('Content-Type: text/plain');
+    echo $e->getMessage();
 }
 
 ?>
