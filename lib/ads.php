@@ -26,19 +26,19 @@
 
 $adDefinitions = array(
     1 => array(
-        'title'       => '',
-        'img'         => '',
-        'destination' => ''
+        'title'       => 'Cassandra London',
+        'img'         => 'http://wehaveyourkidneys.com/cassandra-london.jpg',
+        'destination' => 'http://www.meetup.com/Cassandra-London/events/36802872/'
         ),
     2 => array(
-        'title'       => '',
-        'img'         => '',
-        'destination' => ''
+        'title'       => 'Cassandra London',
+        'img'         => 'http://wehaveyourkidneys.com/cassandra-london.jpg',
+        'destination' => 'http://www.meetup.com/Cassandra-London/events/36802872/'
         ),
     3 => array(
-        'title'       => '',
-        'img'         => '',
-        'destination' => ''
+        'title'       => 'Cassandra London',
+        'img'         => 'http://wehaveyourkidneys.com/cassandra-london.jpg',
+        'destination' => 'http://www.meetup.com/Cassandra-London/events/36802872/'
         )
     );
 

@@ -41,7 +41,7 @@ include_once dirname(__FILE__) . '/../lib/identify.php';
 include_once dirname(__FILE__) . '/../lib/ads.php';
 
 try {
-    // segment
+    // ad#
     $adId = isset($_GET['ad']) ? $_GET['ad'] : NULL;
     
     // ad must exist
