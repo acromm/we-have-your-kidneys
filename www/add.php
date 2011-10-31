@@ -43,6 +43,9 @@ try {
     if ($expires !== NULL && !ctype_digit($expires)) {
         throw new Exception('Invalid "expires" param; need integer number of seconds');
     }
+    
+    // prepend segment name with "seg:"
+    $segment = "seg:$segment";
 
     // store
     $pool = new ConnectionPool('whyk', array('localhost'));

@@ -1,4 +1,4 @@
-# Ad Netowork Demo
+# Ad Network Demo
 
 This code was written to provide a demonstration of DataStax's Brisk at the
 [May 2011 Cassandra London meetup](http://www.meetup.com/Cassandra-London/events/16643691/).
@@ -7,6 +7,10 @@ It uses the [phpcassa Cassandra client library for PHP](https://github.com/thobb
 You can [view a podcast of the talk here](http://skillsmatter.com/podcast/nosql/cassandra-may-meetup/js-1775 "Podcast on SkillsMatter website")
 and [browse the slides here](http://www.slideshare.net/davegardnerisme/cassandra-hadoop-brisk).
 
+It was then updated in October 2011 for a presentation at the NoSQL Exchange
+2011. This time we added in some extra features for tracking impressions and
+clicks and actually _recommending_ ads!
+
 ## Features
 
  - Powers wehaveyourkidneys.com
@@ -14,6 +18,9 @@ and [browse the slides here](http://www.slideshare.net/davegardnerisme/cassandra
  - Real-time access: pixel / API for adding a user to a segment with
    optional expiry time (powered by Cassandra's "expiring columns" feature)
  - Real-time access: API for viewing what segments you have been added to
+ - Real-time access: recommend an ad
+ - Real-time access: track impressions and clicks
+ - Real-time access: track performance of each ad
  - Batch analytics: Hive query to count the number of users in each segment
  - Batch analytics: Hive query to calculate the mean and standard deviation of
    the number of segments users belong to
@@ -39,7 +46,7 @@ There is also a pixel version for using in img tags.
 
 ## Hive queries
 
-One of the things that excites me about Brisk is the ease with which you can
+One of the things that excites me about Brisk* is the ease with which you can
 analyse data in Cassandra. Brisk provides Hive support for Cassandra (an
 SQL-like interface for map reduce jobs). Brisk allows you to both read and
 write data from Cassandra. During the talk I demonstrated the following
@@ -68,3 +75,18 @@ of segments that users belong to:
         FROM whyk.users
         GROUP BY userUuid
          ) tmp;
+
+* NOTE: Brisk has now been dropped by DataStax in favour of their new 
+"DataStax Enterprise" edition. This is a bit of a pain, however there are some
+options. A "pimped fork" is [https://github.com/steeve/brisk](currently
+maintained by steeve). Another option would be to use bog standard Cassandra
+and then get the Hive driver working with a standard Hadoop install. With this
+setup you could still execute Hive directly against Cassandra, but the results
+would be stored in HDFS - hence you'd need a normal Hadoop install.
+
+## Some notes on the project design
+
+This project has been written to try to make it obvious what Cassandra commands
+are being executed. Things like DRY (Don't Repeat Yourself) have been ignored.
+The idea is that any given file should be easy to read purely in terms of how
+it reads or writes to Cassandra.
