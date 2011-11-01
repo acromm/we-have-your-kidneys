@@ -67,10 +67,34 @@ try {
     $segments = new ColumnFamily($pool, 'segments');
     $ads = new ColumnFamily($pool, 'ads');
 
+    $timeBuckets = array();
+    
     $cols = new columnIterator($ads, $adId, date('YmdH', strtotime('-2 hours')));
-
-    foreach ($cols as $k => $v) {
-        echo "$k . $v \n";
+    foreach ($cols as $col => $val) {
+        // col == our composed column name; val = our count
+        
+        // parse column
+        $parts = explode('|', $col);
+        if (count($parts) !== 3) {
+            continue;
+        }
+        
+        $stamp = $parts[0];
+        $segment = $parts[1];
+        $action = $parts[2];
+        
+        if (!isset($timeBuckets[$k])) {
+            $timeBuckets[$stamp] = array(
+                'clicks'      => 0,
+                'impressions' => 0,
+                'ctr'         => 0,
+                'index'       => 0
+                );
+        }
+        
+        if ($segment === '_all') {
+            $timeBuckets[$stamp][$action] = $val;
+        }
     }
     
     // @todo split out each segment vs overall
@@ -80,6 +104,8 @@ try {
     // get overall segment data to compare against for baseline
     // @todo maybe do a multiget?
     
+    header('Content-Type: application/json');
+    echo json_encode($timeBuckets);
     
 } catch (Exception $e) {
     header('HTTP/1.1 500 Internal Server Error');
