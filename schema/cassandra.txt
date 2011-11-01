@@ -8,12 +8,10 @@ create column family users
     with comparator = 'AsciiType';
 
 create column family segments
-    with column_type = 'Super'
     and comparator = 'AsciiType'
     and default_validation_class = CounterColumnType;
 
 create column family ads
-    with column_type = 'Super'
     and comparator = 'AsciiType'
     and default_validation_class = CounterColumnType;
 

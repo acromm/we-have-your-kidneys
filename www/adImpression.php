@@ -9,11 +9,11 @@
  * We need to udpdate:
  * 
  * -> for capacity planning:
- *   ["segments"][<stamp>][<bucketId>]["impression"] = #
+ *   ["segments"][<segmentId>][<stamp>"-impression"] = #
  * -> for overall ad performance tracking:
- *   ["ads"][<adId>][<stamp>]["impression"] = #
+ *   ["ads"][<adId>][<stamp>"-impression"] = #
  * -> for ad performance by bucket:
- *   ["ads"][<adId>][<bucketId>]["impression"] = #
+ *   ["ads"][<adId>"-segments"][<stamp>-<segment>-impression"] = #
  * 
  * @author Dave Gardner <dave@cruft.co>
  *
@@ -57,31 +57,29 @@ try {
     $segments = new ColumnFamily($pool, 'segments');
     $ads = new ColumnFamily($pool, 'ads');
     
+    $stamp = date('YmdH');
+    
     // 1. update counters based on the user's segments (one update per segment)
     foreach ($userSegments as $segment => $value) {
+        // ad performance by segment
         $ads->add(
-                $adId,          // row key
-                'impression',   // column
-                1,              // increment
-                $segment        // super-column
+                $adId,                              // row key
+                "{$stamp}§{$segment}§impression",   // column
+                1                                   // increment
                 );
+        // overall performance of segment - for a baseline
         $segments->add(
-                date('YmdH'),   // row key = hourly timestamp bucket
-                'impression',   // column
-                1,              // increment
-                $segment        // super-column
+                $segment,                           // row key
+                "impression",                       // column
+                1                                   // increment
                 );
     }
     
     // 2. update overall counters for this ad (for performance tracking)
-    // (to 10 mins)
-    $stamp = date('YmdHi');
-    $stamp = substr($stamp, 0, strlen($stamp)-1);
     $ads->add(
-            $adId,              // row key
-            'impression',       // column
-            1,                  // increment
-            $stamp              // super-column
+            $adId,                                  // row key
+            "{$stamp}§_all§impression",             // column
+            1                                       // increment
             );
 
     // ---

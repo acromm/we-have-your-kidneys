@@ -9,11 +9,11 @@
  * We need to udpdate:
  * 
  * -> for capacity planning:
- *   ["segments"][<stamp>][<bucketId>]["click"] = #
+ *   ["segments"][<segmentId>][<stamp>"-click"] = #
  * -> for overall ad performance tracking:
- *   ["ads"][<adId>][<stamp>]["click"] = #
+ *   ["ads"][<adId>][<stamp>-"click"] = #
  * -> for ad performance by bucket:
- *   ["ads"][<adId>][<bucketId>]["click"] = #
+ *   ["ads"][<adId>"-segments"][<stamp>-<segment>-click"] = #
  * 
  * Then we redirect via 307.
  * 
@@ -58,31 +58,30 @@ try {
     // update
     $segments = new ColumnFamily($pool, 'segments');
     $ads = new ColumnFamily($pool, 'ads');
-    
+
+    $stamp = date('YmdH');
+
     // 1. update counters based on the user's segments (one update per segment)
     foreach ($userSegments as $segment => $value) {
+        // ad performance by segment
         $ads->add(
-                $adId,          // row key
-                'click',        // column
-                1,              // increment
-                $segment        // super-column
+                $adId,                          // row key
+                "{$stamp}§{$segment}§click",    // column
+                1                               // increment
                 );
+        // overall performance of segment - for a baseline
         $segments->add(
-                date('YmdH'),   // row key = hourly timestamp bucket
-                'click',        // column
-                1,              // increment
-                $segment        // super-column
+                $segment,                       // row key
+                "click",                        // column
+                1                               // increment
                 );
     }
     
     // 2. update overall counters for this ad (for performance tracking)
-    // (to 10 mins)
-    $stamp = date('YmdHi');
     $ads->add(
-            $adId,              // row key
-            'click',            // column
-            1,                  // increment
-            $stamp              // super-column
+            $adId,                              // row key
+            "{$stamp}§_all§click",              // column
+            1                                   // increment
             );
 
     // ---
