@@ -31,21 +31,28 @@
  */
 
 /**
- * [YmdH] = {
- *      clicks,
- *      impressions,
- *      ctr,
- *      index,      (against baseline ctr for everything)
- *      segments: [
- *              {
- *                  'segment': 'foo',
- *                  clicks,
- *                  impressions,
- *                  ctr,
- *                  index       (against baseline for this segment)
- *              }
- *          ]
- *      }
+ * 'click':      0
+ * 'impression': 0
+ * 'ctr'         0
+ * 
+ * segments: [
+ *     foo: {
+ *         click:      0
+ *         impression: 0
+ *         ctr:        0
+ *         index:      0  <-- against the ad baseline
+ *         }
+ * ]
+ * 
+ * time: [
+ *     stamp: {
+ *         click:      0
+ *         impression: 0
+ *         ctr:        0
+ *         index:      0  <-- against the ad baseline
+ *     }
+ * ]
+ * 
  */
 
 include_once dirname(__FILE__) . '/../thirdParty/phpcassa/columnfamily.php';
@@ -67,9 +74,18 @@ try {
     $segments = new ColumnFamily($pool, 'segments');
     $ads = new ColumnFamily($pool, 'ads');
 
-    $timeBuckets = array();
+    $data = array(
+        'click'      => 0,
+        'impression' => 0,
+        'ctr'        => 0,
+        'segments'   => array(
+            
+            ),
+        'time'       => array(
+            )
+        );
     
-    $cols = new columnIterator($ads, $adId, date('YmdH', strtotime('-2 hours')));
+    $cols = new columnIterator($ads, $adId, date('YmdH', strtotime('-1 day')));
     foreach ($cols as $col => $val) {
         // col == our composed column name; val = our count
         
@@ -82,45 +98,57 @@ try {
         $stamp = $parts[0];
         $segment = $parts[1];
         $action = $parts[2];
-
-        if (!isset($timeBuckets[$stamp])) {
-            $timeBuckets[$stamp] = array(
-                'click'       => 0,
-                'impression'  => 0,
-                'ctr'         => 0,
-                'index'       => 0,
-                'segments'    => array()
-                );
-        }
+        
         if ($segment == '_all') {
-            $timeBuckets[$stamp][$action] = $val;
-            $timeBuckets[$stamp]['ctr'] = $timeBuckets[$stamp]['impression'] > 0
-                    ? $timeBuckets[$stamp]['click'] / $timeBuckets[$stamp]['impression']
-                    : 0;
-        } else {
-            if (!isset($timeBuckets[$stamp]['segments'][$segment])) {
-                $timeBuckets[$stamp]['segments'][$segment] = array(
-                    'click'      => 0,
-                    'impression' => 0,
-                    'ctr'        => 0,
-                    'index'      => 0
+            // overall
+            $data[$action] += $val;
+            
+            // add time bucket, if needed
+            if (!isset($data['time'][$stamp])) {
+                $data['time'][$stamp] = array(
+                    'click'       => 0,
+                    'impression'  => 0,
+                    'ctr'         => 0,
+                    'index'       => 0
                     );
             }
-            $timeBuckets[$stamp]['segments'][$segment][$action] = $val;
-            $timeBuckets[$stamp]['segments'][$segment]['ctr'] =
-                    $timeBuckets[$stamp]['segments'][$segment]['impression'] > 0
-                    ? $timeBuckets[$stamp]['segments'][$segment]['click']
-                        / $timeBuckets[$stamp]['segments'][$segment]['impression']
-                    : 0;
+            $data['time'][$stamp][$action] += $val;
+            
+        } else {
+            // segment
+            if (!isset($data['segments'][$segment])) {
+                $data['segments'][$segment] = array(
+                    'click'       => 0,
+                    'impression'  => 0,
+                    'ctr'         => 0,
+                    'index'       => 0
+                    );
+            }
+            $data['segments'][$segment][$action] += $val;
         }
     }
     
-    // @todo split out each segment vs overall
-    // @todo maybe have overall segment as _overall so it's first in list
-    // now we have the hourly data
+    // work out CTRs and indexes
+    $data['ctr'] = $data['impression'] > 0
+            ? $data['click'] / $data['impression']
+            : 0;
     
-    // get overall segment data to compare against for baseline
-    // @todo maybe do a multiget?
+    foreach ($data['time'] as &$bucket) {
+        $bucket['ctr'] = $bucket['impression'] > 0
+            ? $bucket['click'] / $bucket['impression']
+            : 0;
+        $bucket['index'] = $data['ctr'] > 0
+            ? ($bucket['ctr'] / $data['ctr']) * 100
+            : 0;
+    }
+    foreach ($data['segments'] as &$bucket) {
+        $bucket['ctr'] = $bucket['impression'] > 0
+            ? $bucket['click'] / $bucket['impression']
+            : 0;
+        $bucket['index'] = $data['ctr'] > 0
+            ? ($bucket['ctr'] / $data['ctr']) * 100
+            : 0;
+    }
     
     header('Content-Type: application/json');
     echo json_encode($timeBuckets);

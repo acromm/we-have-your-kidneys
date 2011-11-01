@@ -10,10 +10,12 @@
  * 
  * -> for capacity planning:
  *   ["segments"][<segmentId>][<stamp>"-click"] = #
- * -> for overall ad performance tracking:
- *   ["ads"][<adId>][<stamp>-"click"] = #
- * -> for ad performance by bucket:
- *   ["ads"][<adId>"-segments"][<stamp>-<segment>-click"] = #
+ * 
+ * -> for baseline performance [hourly] (get last 24 hours)
+ *   ["baseline"][<stamp>]["click"] = #
+ * 
+ * -> for ad performance by-segment:
+ *   ["ads"][<adId>][<stamp>-<segment>-click"] = #
  * 
  * Then we redirect via 307.
  * 

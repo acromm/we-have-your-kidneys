@@ -18,9 +18,9 @@ clicks and actually _recommending_ ads!
  - Real-time access: pixel / API for adding a user to a segment with
    optional expiry time (powered by Cassandra's "expiring columns" feature)
  - Real-time access: API for viewing what segments you have been added to
- - Real-time access: recommend an ad
- - Real-time access: track impressions and clicks
- - Real-time access: track performance of each ad
+ - Real-time access: track time-based impressions and clicks for ads to show
+   CTR over time, including per-segment
+ - Real-time access: track overall performance of each segment for an ad
  - Batch analytics: Hive query to count the number of users in each segment
  - Batch analytics: Hive query to calculate the mean and standard deviation of
    the number of segments users belong to

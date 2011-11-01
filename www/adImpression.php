@@ -10,10 +10,12 @@
  * 
  * -> for capacity planning:
  *   ["segments"][<segmentId>][<stamp>"-impression"] = #
- * -> for overall ad performance tracking:
- *   ["ads"][<adId>][<stamp>"-impression"] = #
- * -> for ad performance by bucket:
- *   ["ads"][<adId>"-segments"][<stamp>-<segment>-impression"] = #
+ * 
+ * -> for baseline performance [hourly] (get last 24 hours)
+ *   ["baseline"][<stamp>]["impression"] = #
+ * 
+ * -> for ad performance by-segment:
+ *   ["ads"][<adId>][<stamp>-<segment>-impression"] = #
  * 
  * @author Dave Gardner <dave@cruft.co>
  *
