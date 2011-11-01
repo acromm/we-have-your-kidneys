@@ -33,12 +33,12 @@ $adDefinitions = array(
     2 => array(
         'title'       => 'Things',
         'img'         => 'http://wehaveyourkidneys.com/i/things.jpg',
-        'destination' => 'http://www.google.co.uk/search?q=things'
+        'destination' => 'http://www.google.co.uk/search?q=things&tbm=shop'
         ),
     3 => array(
-        'title'       => 'Cassandra London',
-        'img'         => 'http://wehaveyourkidneys.com/cassandra-london.jpg',
-        'destination' => 'http://www.meetup.com/Cassandra-London/events/36802872/'
+        'title'       => 'Things from Dave',
+        'img'         => 'http://wehaveyourkidneys.com/i/fromdave.jpg',
+        'destination' => 'http://plantsvszombies.wikia.com/wiki/Crazy_Dave%27s_Twiddydinkies'
         )
     );
 
