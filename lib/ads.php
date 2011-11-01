@@ -31,9 +31,9 @@ $adDefinitions = array(
         'destination' => 'http://www.meetup.com/Cassandra-London/events/36802872/'
         ),
     2 => array(
-        'title'       => 'Cassandra London',
-        'img'         => 'http://wehaveyourkidneys.com/cassandra-london.jpg',
-        'destination' => 'http://www.meetup.com/Cassandra-London/events/36802872/'
+        'title'       => 'Things',
+        'img'         => 'http://wehaveyourkidneys.com/i/things.jpg',
+        'destination' => 'http://www.google.co.uk/search?q=things'
         ),
     3 => array(
         'title'       => 'Cassandra London',
