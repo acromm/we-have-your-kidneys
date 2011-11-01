@@ -56,7 +56,7 @@ include_once dirname(__FILE__) . '/../lib/columnIterator.php';
 try {
     // ad#
     $adId = isset($_GET['ad']) ? $_GET['ad'] : NULL;
-    
+
     // ad must exist
     if (!isset($adDefinitions[$adId])) {
         throw new Exception('Invalid "ad" param; not a valid ad');
@@ -68,7 +68,7 @@ try {
     $ads = new ColumnFamily($pool, 'ads');
 
     $cols = new columnIterator($ads, $adId, date('YmdH', strtotime('-2 hours')));
-    
+
     foreach ($cols as $k => $v) {
         echo "$k . $v \n";
     }

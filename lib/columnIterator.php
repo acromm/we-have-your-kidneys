@@ -23,7 +23,7 @@
  * along with We Have Your Kidneys.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class columnIterator
+class columnIterator implements Iterator
 {
     /**
      * CF
@@ -42,14 +42,14 @@ class columnIterator
     /**
      * Desired start column cut-off
      * 
-     * @var string|NULL
+     * @var string
      */
     private $startColumn;
     
     /**
      * Desired end column cut-off
      * 
-     * @var string|NULL
+     * @var string
      */
     private $endColumn;
     
@@ -86,10 +86,11 @@ class columnIterator
     public function __construct(
             ColumnFamily $columnFamily,
             $rowKey,
-            $startColumn = NULL,
-            $endColumn = NULL
+            $startColumn = '',
+            $endColumn = ''
             )
     {
+        $this->cf = $columnFamily;
         $this->rowKey = $rowKey;
         $this->startColumn = $startColumn;
         $this->endColumn = $endColumn;
@@ -112,7 +113,7 @@ class columnIterator
     {
         $this->initBuffer();
         if (next($this->buffer) === FALSE) {
-            
+            $this->readBuffer();
         }
     }
     
@@ -149,15 +150,21 @@ class columnIterator
     private function readBuffer()
     {
         if (!$this->noMoreToFetch) {
-            $this->buffer = $this->columnFamily->get(
+            $this->buffer = $this->cf->get(
                     $this->rowKey,      // row key
                     NULL,               // no specific cols
                     $this->nextColumn,
                     $this->endColumn
                     );
+            // if call# > 1st, trim off first column
+            if ($this->startColumn !== $this->nextColumn) {
+                array_shift($this->buffer);
+            }
+
             if (!empty($this->buffer)) {
                 end($this->buffer);
                 list($this->nextColumn) = each($this->buffer);
+                reset($this->buffer);
             } else {
                 $this->noMoreToFetch = TRUE;
             }
