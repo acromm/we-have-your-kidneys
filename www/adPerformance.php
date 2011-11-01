@@ -6,11 +6,6 @@
  * 
  *  - ad        Required; the unique ad identifier
  * 
- * We will get overall performance of ad against baseline
- * 
- * 
- * 
- * 
  * @author Dave Gardner <dave@cruft.co>
  *
  * This file is part of We Have Your Kidneys.

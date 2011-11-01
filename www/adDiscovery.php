@@ -1,9 +1,8 @@
 <?php
 /**
- * Choose and display a recommended ad
+ * Ad discovery
  *
- * We need to get all the user's segments and then work out which ad scores
- * most highly for this user.
+ * Pick an ad at random so we can learn which segments over-index on CTR.
  * 
  * @author Dave Gardner <dave@cruft.co>
  *
