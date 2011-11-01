@@ -37,8 +37,8 @@ try {
     $expires = isset($_GET['expires']) ? $_GET['expires'] : NULL;
 
     // segment needed; expires must be int
-    if ($segment === NULL || !preg_match('/^[a-zA-Z0-9]+$/', $segment)) {
-        throw new Exception('Invalid "segment" param; need [a-zA-Z0-9]');
+    if ($segment === NULL || !preg_match('/^[a-zA-Z0-9-]+$/', $segment)) {
+        throw new Exception('Invalid "segment" param; need [a-zA-Z0-9-]');
     }
     if ($expires !== NULL && !ctype_digit($expires)) {
         throw new Exception('Invalid "expires" param; need integer number of seconds');

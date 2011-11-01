@@ -66,7 +66,7 @@ try {
         // ad performance by segment
         $ads->add(
                 $adId,                          // row key
-                "{$stamp}§{$segment}§click",    // column
+                "{$stamp}|{$segment}|click",    // column
                 1                               // increment
                 );
         // overall performance of segment - for a baseline
@@ -80,7 +80,7 @@ try {
     // 2. update overall counters for this ad (for performance tracking)
     $ads->add(
             $adId,                              // row key
-            "{$stamp}§_all§click",              // column
+            "{$stamp}|_all|click",              // column
             1                                   // increment
             );
 

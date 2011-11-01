@@ -115,3 +115,9 @@ This project has been written to try to make it obvious what Cassandra commands
 are being executed. Things like DRY (Don't Repeat Yourself) have been ignored.
 The idea is that any given file should be easy to read purely in terms of how
 it reads or writes to Cassandra.
+
+Segments are limited to alphanumeric and minus signs; in this way we can use
+other special characters when constructing composite keys (for row / column 
+names). Specifically, we prepend segment names with **seg:** and we use **|**
+to split up composite column names.
+
