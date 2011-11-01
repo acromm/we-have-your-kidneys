@@ -151,7 +151,7 @@ try {
     }
     
     header('Content-Type: application/json');
-    echo json_encode($timeBuckets);
+    echo json_encode($data);
     
 } catch (Exception $e) {
     header('HTTP/1.1 500 Internal Server Error');
