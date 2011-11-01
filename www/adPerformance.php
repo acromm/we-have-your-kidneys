@@ -83,17 +83,19 @@ try {
         $segment = $parts[1];
         $action = $parts[2];
         
-        if (!isset($timeBuckets[$k])) {
+        if (!isset($timeBuckets[$stamp])) {
             $timeBuckets[$stamp] = array(
-                'clicks'      => 0,
-                'impressions' => 0,
+                'click'       => 0,
+                'impression'  => 0,
                 'ctr'         => 0,
                 'index'       => 0
                 );
         }
-        
-        if ($segment === '_all') {
+        if ($segment == '_all') {
             $timeBuckets[$stamp][$action] = $val;
+            $timeBuckets[$stamp]['ctr'] = $timeBuckets[$stamp]['impression'] > 0
+                    ? $timeBuckets[$stamp]['click'] / $timeBuckets[$stamp]['impression']
+                    : 0;
         }
     }
     
