@@ -82,18 +82,28 @@ try {
         $stamp = $parts[0];
         $segment = $parts[1];
         $action = $parts[2];
-        
+
         if (!isset($timeBuckets[$k])) {
             $timeBuckets[$stamp] = array(
                 'clicks'      => 0,
                 'impressions' => 0,
                 'ctr'         => 0,
-                'index'       => 0
+                'index'       => 0,
+                'segments'    => array()
                 );
         }
         
         if ($segment === '_all') {
             $timeBuckets[$stamp][$action] = $val;
+        } else {
+            if (!isset($timeBuckets[$stamp]['segments'][$segment])) {
+                $timeBuckets[$stamp]['segments'][$segment] = array(
+                    'click'      => 0,
+                    'impression' => 0,
+                    'ctr'        => 0,
+                    'index'      => 0
+                    );
+            }
         }
     }
     
