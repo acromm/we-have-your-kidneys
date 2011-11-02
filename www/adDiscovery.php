@@ -44,5 +44,5 @@ try {
     <a href="http://www.wehaveyourkidneys.com/adClick.php?ad=<?=$adId?>" title="<?=htmlspecialchars($ad['title'])?>">
         <img src="<?=$ad['img']?>" alt="<?=htmlspecialchars($ad['title'])?>" />
     </a>
-    <img src="http://pixel.wehaveyourkidneys.com/adImpression.php?ad=<?=$adId?>&r=<?=time()?>" />
+    <img src="http://pixel.wehaveyourkidneys.com/adImpression.php?ad=<?=$adId?>&r=<?=time()?>" width="1" height="1" />
 </div>

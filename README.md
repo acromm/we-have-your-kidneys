@@ -53,16 +53,27 @@ write data from Cassandra. During the talk I demonstrated the following
 queries.
 
 To run my queries, I created a Hive external table for my user ColumnFamily.
+This used to be a requirement; however the latest version of Brisk will 
+automatically hook up to any Cassandra CFs. However! What it won't do 
+automatically is cast to nice column names (via the "mapping" parameter below).
+Hence it is sometimes handy to create an external table with a new name.
 
-    CREATE EXTERNAL TABLE whyk.users
+    USE whyk;
+
+    CREATE EXTERNAL TABLE tempUsers
     (userUuid string, segmentId string, value string)
     STORED BY 'org.apache.hadoop.hive.cassandra.CassandraStorageHandler'
-    WITH SERDEPROPERTIES ("cassandra.columns.mapping" = ":key,:column,:value");
+    WITH SERDEPROPERTIES (
+        "cassandra.columns.mapping" = ":key,:column,:value",
+        "cassandra.cf.name" = "users"
+        );
+
+http://www.datastax.com/docs/1.0/datastax_enterprise/about_hive#reference-serdeproperties-and-tblproperties
 
 I could then count up the number of users in each segment:
 
     SELECT segmentId, count(1) AS total
-    FROM whyk.users
+    FROM tempUsers
     GROUP BY segmentId
     ORDER BY total DESC;
 
@@ -72,7 +83,7 @@ of segments that users belong to:
     SELECT avg(num), stddev_samp(num)
     FROM (
         SELECT count(1) AS num
-        FROM whyk.users
+        FROM tempUsers
         GROUP BY userUuid
          ) tmp;
 
@@ -84,7 +95,17 @@ and then get the Hive driver working with a standard Hadoop install. With this
 setup you could still execute Hive directly against Cassandra, but the results
 would be stored in HDFS - hence you'd need a normal Hadoop install.
 
-## Installing Brisk
+Finally, you can just go with DataStax Enterprise. There is a version available
+specifically for startups, and a free trial for 30 days.
+
+http://www.datastax.com/download
+
+
+## Installation
+
+I went for an Ubuntu Lucid Amazon box with compiled Brisk.
+
+https://github.com/steeve/brisk
 
     sudo apt-get update
     sudo apt-get install git-core ant openjdk-6-jdk libmaven-compiler-plugin-java
@@ -115,6 +136,9 @@ This project has been written to try to make it obvious what Cassandra commands
 are being executed. Things like DRY (Don't Repeat Yourself) have been ignored.
 The idea is that any given file should be easy to read purely in terms of how
 it reads or writes to Cassandra.
+
+I choose PHP because I am most familiar with it. I am not suggesting it is the
+most suitable language for this kind of application.
 
 Segments are limited to alphanumeric and minus signs; in this way we can use
 other special characters when constructing composite keys (for row / column 
